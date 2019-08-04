@@ -43,9 +43,9 @@ module.exports = async (req, res, next) => {
         res.status(400).json({ error: 'An error occured' })
       })
   } else {
-    console.log("don't found")
+    console.log(`city ${parameter} not found`)
     res.status(200).json({
-      data: `We're sorry we have no weather information about ${
+      info: `We're sorry we have no weather information about ${
         req.params.city
       }`
     })

@@ -80,7 +80,7 @@ module.exports = async (req, res, next) => {
       res.status(200).json(returnObj)
     })
     .catch(error => {
-      console.log('Error:', error)
-      res.status(400).json({ error: 'An error occured' })
+      console.error('Error:', error)
+      res.status(400).json({ error: 'An error has occured' })
     })
 }
