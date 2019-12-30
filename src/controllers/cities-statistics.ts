@@ -6,92 +6,79 @@ import { currentWeatherForecast } from '../helpers/recovers-forecasts'
 const env = process.env.NODE_ENV
 const config = require('../../config/config.json')[env]
 
-export interface ResponseInterface{
-  cityName: string,
+export interface ResponseInterface {
+  cityName: string
   value: number
 }
 
-export interface AvgTemperatureInterface extends ResponseInterface{}
-export interface HottestCityInterface extends ResponseInterface{}
-export interface WetterCityInterface extends ResponseInterface{}
+export interface AvgTemperatureInterface extends ResponseInterface {}
+export interface HottestCityInterface extends ResponseInterface {}
+export interface WetterCityInterface extends ResponseInterface {}
 
-export interface CityMetricsInterface{
-  avgTemperatures: AvgTemperatureInterface[],
-  wetterCity: WetterCityInterface,
+export interface CityMetricsInterface {
+  avgTemperatures: AvgTemperatureInterface[]
+  wetterCity: WetterCityInterface
   hottestCity: HottestCityInterface
 }
 
 const highestUmidity = (cities: any) => {
-  let city = {
-    name: '',
-    maxUmidity: 0
-  }
-  for (let city of cities) {
-    let main = _.get(_.get(city, 'data'), 'main')
-    if (main.humidity > city.maxUmidity) {
-      city = {
-        name: city.data.name,
-        maxUmidity: main.humidity
-      }
-    }
+  let wetterCity: WetterCityInterface = {
+    cityName: '',
+    value: 0
   }
 
-  const wetterCity:WetterCityInterface={
-    cityName: city.name,
-    value: city.maxUmidity
+  for (let city of cities) {
+    const name = city.data.name
+    const humidity = _.get(_.get(city, 'data'), 'main').humidity
+    if (humidity > wetterCity.value) {
+      wetterCity.cityName = name
+      wetterCity.value = humidity
+    }
   }
 
   return wetterCity
 }
 
-const highestTemperature = (cities: any):HottestCityInterface => {
-  let city = {
-    name: '',
-    maxTemperature: 0
+const highestTemperature = (cities: any): HottestCityInterface => {
+  let hottestCity: HottestCityInterface = {
+    cityName: '',
+    value: 0
   }
-
   for (let city of cities) {
-    let main = _.get(_.get(city, 'data'), 'main')
-    if (main.temp > city.maxTemperature) {
-      city = {
-        name: city.data.name,
-        maxTemperature: main.temp
-      }
+    let temp = _.get(_.get(city, 'data'), 'main').temp
+    if (temp > hottestCity.value) {
+      ;(hottestCity.cityName = city.data.name), (hottestCity.value = temp)
     }
-  }
-
-  const hottestCity:HottestCityInterface = {
-    cityName:city.name,
-    value: city.maxTemperature
   }
 
   return hottestCity
 }
 
-const averageTemperature = (city:any):AvgTemperatureInterface => {
+const averageTemperature = (city: any): AvgTemperatureInterface => {
   const main = _.get(city, 'main')
   const avg = (main.temp_min + main.temp_max) / 2
 
-  const avgTempResponse:AvgTemperatureInterface={
+  const avgTempResponse: AvgTemperatureInterface = {
     cityName: city.name,
     value: avg
-  } 
+  }
 
   return avgTempResponse
 }
 
-export default async (req:Request, res:Response, next:NextFunction) => {
+export default async (req: Request, res: Response, next: NextFunction) => {
   const citiesThatIlike = config.local.cities
 
-  let promises:any[]=[];
+  let promises: any[] = []
 
-  citiesThatIlike.map((city:any) => {
+  citiesThatIlike.map((city: any) => {
     promises.push(currentWeatherForecast(city))
   })
 
   Promise.all(promises)
     .then(result => {
-      let avgTemperatures:AvgTemperatureInterface[]=[];
+      console.log('result: ', result)
+      let avgTemperatures: AvgTemperatureInterface[] = []
 
       for (let city of result) {
         avgTemperatures.push(averageTemperature(city.data))
@@ -100,12 +87,12 @@ export default async (req:Request, res:Response, next:NextFunction) => {
       let wetterCity = highestUmidity(result)
       let hottestCity = highestTemperature(result)
 
-      const response:CityMetricsInterface={
+      const response: CityMetricsInterface = {
         avgTemperatures,
         hottestCity,
         wetterCity
       }
-      
+
       res.status(200).json(response)
     })
     .catch(error => {

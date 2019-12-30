@@ -42,7 +42,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   } else {
     console.log(`city ${parameter} not found`)
     res.status(200).json({
-      info: `We're sorry we have no weather information about ${req.params.city}`
+      info: `We're sorry we have no weather information about ${parameter.toUpperCase()} in environment: ${env}`
     })
   }
 }

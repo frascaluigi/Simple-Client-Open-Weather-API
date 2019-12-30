@@ -5,11 +5,11 @@
   "main": "app.js",
   "scripts": {
     "start": "npm run dev",
-    "build": "tsc",
+    "tsc": "tsc",
     "lint": "eslint . & echo 'lint complete'",
     "dev": "NODE_ENV=development ts-node-dev --respawn --transpileOnly ./src/app.ts",
-    "prod": "tsc && node ./built/src/app.js",
-    "debug": "tsc && node --inspect ./built/src/app.js"
+    "prod": "tsc && NODE_ENV=test node ./build/app.js",
+    "debug": "tsc && NODE_ENV=test node --inspect ./build/app.js"
   },
   "keywords": [],
   "author": "",

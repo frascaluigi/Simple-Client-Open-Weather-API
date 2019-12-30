@@ -15,5 +15,5 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/exposed-api', weather_api)
 
 app.listen(config.local.port, () => {
-  console.log(`${config.local.app_name} started on port: ${config.local.port}`)
+  console.log(`${config.local.app_name} started on port: ${config.local.port} (ENVIRONMENT: ${env})`)
 })

@@ -8,7 +8,7 @@ export const currentWeatherForecast = async (city:string):Promise<AxiosResponse>
     config.local.external_api_key
   }`
   try {
-    return await axios.get(urlCurrentWeatherForecast)
+    return axios.get(urlCurrentWeatherForecast)
   } catch (error) {
     throw new Error(`API Open Weather Failed: ${error}`)
   }
