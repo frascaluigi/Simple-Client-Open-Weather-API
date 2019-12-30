@@ -77,7 +77,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
   Promise.all(promises)
     .then(result => {
-      console.log('result: ', result)
       let avgTemperatures: AvgTemperatureInterface[] = []
 
       for (let city of result) {
