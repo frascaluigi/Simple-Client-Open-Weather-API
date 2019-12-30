@@ -1,9 +1,9 @@
-const axios = require('axios')
+import axios, { AxiosResponse } from 'axios'
 
 const env = process.env.NODE_ENV
-const config = require('../config/config.json')[env]
+const config = require('../../config/config.json')[env]
 
-const currentWeatherForecast = async city => {
+export const currentWeatherForecast = async (city:string):Promise<AxiosResponse> => {
   let urlCurrentWeatherForecast = `http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${
     config.local.external_api_key
   }`
@@ -14,7 +14,7 @@ const currentWeatherForecast = async city => {
   }
 }
 
-const fiveDaysForecast = async city => {
+export const fiveDaysForecast = async (city:string):Promise<AxiosResponse> => {
   let urlFiveDaysForecast = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${
     config.local.external_api_key
   }`
@@ -24,6 +24,3 @@ const fiveDaysForecast = async city => {
     throw new Error(`API Open Weather Failed: ${error}`)
   }
 }
-
-module.exports.currentWeatherForecast = currentWeatherForecast
-module.exports.fiveDaysForecast = fiveDaysForecast

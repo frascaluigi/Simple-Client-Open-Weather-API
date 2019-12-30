@@ -1,10 +1,10 @@
-const express = require('express')
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const weather_api = require('./controllers/index')
+import express from 'express'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+import weather_api from './controllers/index'
 
 const env = process.env.NODE_ENV
-const config = require('./config/config.json')[env]
+const config = require('../config/config.json')[env]
 
 const app = express()
 
