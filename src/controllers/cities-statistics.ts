@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { Request, Response, NextFunction } from 'express'
 
 import { currentWeatherForecast } from '../helpers/recovers-forecasts'
+import { AxiosResponse } from 'axios'
 
 const env = process.env.NODE_ENV
 const config = require('../../config/config.json')[env]
@@ -69,8 +70,7 @@ const averageTemperature = (city: any): AvgTemperatureInterface => {
 export default async (req: Request, res: Response, next: NextFunction) => {
   const citiesThatIlike = config.local.cities
 
-  let promises: any[] = []
-
+  let promises:Promise<AxiosResponse>[] = []
   citiesThatIlike.map((city: any) => {
     promises.push(currentWeatherForecast(city))
   })
@@ -94,8 +94,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
       res.status(200).json(response)
     })
-    .catch(error => {
-      console.error('Error:', error)
+    .catch(err => {
+      console.error('Error:', err)
       res.status(400).json({ error: 'An error has occured' })
     })
 }
