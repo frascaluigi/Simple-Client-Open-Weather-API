@@ -3,6 +3,7 @@
         "sourceMap": true,
         "esModuleInterop": true,
         "allowJs": true,
+        "resolveJsonModule": true,
         "noImplicitAny": false,
         "moduleResolution": "node",
         "lib": ["es2018"],
