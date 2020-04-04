@@ -1,8 +1,8 @@
 import express from 'express'
 
-import currentWeather from './current-weather'
-import cityStatistics from './cities-statistics'
-import fiveDays from './five-days'
+import currentWeather from '../controllers/current-weather'
+import cityStatistics from '../controllers/cities-statistics'
+import fiveDays from '../controllers/five-days'
 
 const router = express.Router()
 

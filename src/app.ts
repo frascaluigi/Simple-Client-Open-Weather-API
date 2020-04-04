@@ -1,7 +1,8 @@
 import express from 'express'
+import morgan from 'morgan';
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import weather_api from './controllers/index'
+import weather_api from './routes/index'
 
 const env = process.env.NODE_ENV
 const config = require('../config/config.json')[env]
@@ -12,6 +13,7 @@ app.use(cors())
 app.use(bodyParser.json({ limit: '12mb' }))
 app.use(bodyParser.urlencoded({ extended: false }))
 
+app.use(morgan('development'))
 app.use('/exposed-api', weather_api)
 
 app.listen(config.local.port, () => {
