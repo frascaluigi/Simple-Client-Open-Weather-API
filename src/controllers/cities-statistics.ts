@@ -3,9 +3,8 @@ import { Request, Response, NextFunction } from 'express'
 
 import { currentWeatherForecast } from '../helpers/recovers-forecasts'
 import { AxiosResponse } from 'axios'
+import { config } from '../app';
 
-const env = process.env.NODE_ENV
-const config = require('../../config/config.json')[env]
 
 export interface ResponseInterface {
   cityName: string
@@ -68,7 +67,7 @@ const averageTemperature = (city: any): AvgTemperatureInterface => {
 }
 
 export default async (req: Request, res: Response, next: NextFunction) => {
-  const citiesThatIlike = config.local.cities
+  const citiesThatIlike = config.get('server').cities;
 
   let promises:Promise<AxiosResponse>[] = []
   citiesThatIlike.map((city: any) => {
