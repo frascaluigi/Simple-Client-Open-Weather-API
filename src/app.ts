@@ -2,9 +2,10 @@ import express from 'express'
 import morgan from 'morgan';
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import weather_api from './routes/index'
+import index from './routes/index'
 import nconf from 'nconf';
 import * as path from 'path';
+import passport from 'passport';
 const expressSession =  require('express-session');
 const FileStore = require('session-file-store')(expressSession);
 // Setup nconf
@@ -33,20 +34,32 @@ if(isDev){
   console.log("REDIS")
 }
 
-  const SERVER = nconf.get('server');
+//Passport Authentication
+passport.serializeUser((profile:any, done) => done(null, {
+  id: profile.id,
+  provider: profile.provider
+}))
+passport.deserializeUser((user, done) => done(null, user));
+
+
+const CONFIG_SERVER = nconf.get('server');
   
-  app.use(cors())
-  app.use(bodyParser.json({ limit: '12mb' }))
-  app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cors())
+app.use(bodyParser.json({ limit: '12mb' }))
+app.use(bodyParser.urlencoded({ extended: false }))
   
-  app.use(morgan('development'))
-  app.use('/exposed-api', weather_api)
+app.use(morgan('development'));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/api', index)
   
   
 export const config = nconf;
 
-app.listen(SERVER.port, () => {
-  console.log(`${SERVER.app_name} started on port: ${SERVER.port} (ENVIRONMENT: ${NODE_ENV})`)
+app.listen(CONFIG_SERVER.port, () => {
+  console.log(`${CONFIG_SERVER.app_name} started on port: ${CONFIG_SERVER.port} (ENVIRONMENT: ${NODE_ENV})`)
 })
 
 
