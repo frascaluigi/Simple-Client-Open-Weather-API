@@ -3,22 +3,16 @@ import morgan from 'morgan';
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import index from './routes/index'
-import nconf from 'nconf';
-import * as path from 'path';
+import {config} from './loadConfiguration';
 import passport from 'passport';
+const {URL} = require('url');
+
 const expressSession =  require('express-session');
 const FileStore = require('session-file-store')(expressSession);
-// Setup nconf
-nconf
-  .argv()
-  .env()
-  .defaults({'NODE_ENV': 'development'});
 
-const NODE_ENV = nconf.get('NODE_ENV');
-nconf
-  .file({ file: path.join(`${__dirname}/../config/`, `${NODE_ENV}.config.json`) });
- 
+const NODE_ENV = config.get('NODE_ENV')
 const isDev = NODE_ENV === 'development';
+
 const app = express()
 
 if(isDev){
@@ -34,15 +28,8 @@ if(isDev){
   console.log("REDIS")
 }
 
-//Passport Authentication
-passport.serializeUser((profile:any, done) => done(null, {
-  id: profile.id,
-  provider: profile.provider
-}))
-passport.deserializeUser((user, done) => done(null, user));
-
-
-const CONFIG_SERVER = nconf.get('server');
+const CONFIG_SERVER = config.get('server');
+const serviceUrl = new URL('/api', CONFIG_SERVER.service_url+':'+CONFIG_SERVER.port);
   
 app.use(cors())
 app.use(bodyParser.json({ limit: '12mb' }))
@@ -53,13 +40,11 @@ app.use(morgan('development'));
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 app.use('/api', index)
-  
-  
-export const config = nconf;
 
 app.listen(CONFIG_SERVER.port, () => {
-  console.log(`${CONFIG_SERVER.app_name} started on port: ${CONFIG_SERVER.port} (ENVIRONMENT: ${NODE_ENV})`)
+  console.log(`${CONFIG_SERVER.app_name} started: ${serviceUrl} (ENVIRONMENT: ${NODE_ENV})`)
 })
 
 
