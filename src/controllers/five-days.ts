@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { Request, Response, NextFunction } from 'express'
 
 import { fiveDaysForecast } from '../helpers/recovers-forecasts'
-import { config } from '../app';
+import { config } from '../loadConfiguration';
 
 
 export default async (req: Request, res: Response, next: NextFunction) => {
