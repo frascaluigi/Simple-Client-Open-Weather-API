@@ -1,7 +1,6 @@
 import express from 'express'
 import currentWeather from '../controllers/current-weather'
 import statisticsController from '../controllers/StatisticsController'
-import fiveDays from '../controllers/five-days'
 
 const router = express.Router()
 
