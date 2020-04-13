@@ -7,6 +7,6 @@ const router = express.Router()
 
 router.get('/current-weather-forecast/:city', currentWeather)
 router.get('/statistics', statisticsController.citiesStatisticsResponse)
-router.get('/five-days-forecast/:city', fiveDays)
+router.get('/five-days-forecast/:city', statisticsController.fiveDaysResponse)
 
 export default router
