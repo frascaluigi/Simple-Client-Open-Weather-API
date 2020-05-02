@@ -7,6 +7,9 @@ import nconf from 'nconf';
 import * as path from 'path';
 const expressSession =  require('express-session');
 const FileStore = require('session-file-store')(expressSession);
+
+const app = express()
+
 // Setup nconf
 nconf
   .argv()
@@ -16,9 +19,10 @@ nconf
 const NODE_ENV = nconf.get('NODE_ENV');
 nconf
   .file({ file: path.join(`${__dirname}/../config/`, `${NODE_ENV}.config.json`) });
- 
+
+export const config = nconf;
+
 const isDev = NODE_ENV === 'development';
-const app = express()
 
 if(isDev){
   // Use FileStore in development mode
@@ -33,7 +37,9 @@ if(isDev){
   console.log("REDIS")
 }
 
-  const SERVER = nconf.get('server');
+app.use(cors())
+app.use(bodyParser.json({ limit: '12mb' }))
+app.use(bodyParser.urlencoded({ extended: false }))
   
   app.use(cors())
   app.use(bodyParser.json({ limit: '12mb' }))
@@ -41,12 +47,9 @@ if(isDev){
   
   app.use(morgan('development'))
   app.use('/exposed-api', weather_api)
-  
-  
-export const config = nconf;
 
-app.listen(SERVER.port, () => {
-  console.log(`${SERVER.app_name} started on port: ${SERVER.port} (ENVIRONMENT: ${NODE_ENV})`)
-})
+// app.listen(SERVER.port, () => {
+//   console.log(`${SERVER.app_name} started on port: ${SERVER.port} (ENVIRONMENT: ${NODE_ENV})`)
+// })
 
 
