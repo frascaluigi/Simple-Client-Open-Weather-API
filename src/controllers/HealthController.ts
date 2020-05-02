@@ -7,7 +7,11 @@ import {config} from '../loadConfiguration';
 class HealthController {
 
     static getVersionResponse = (req:Request, res:Response) => {
-        res.status(200).send({version: pkg.version, env: config.get('env')})
+        res.status(200).send({
+            app: config.get('app_name'),
+            env: config.get('env'),
+            version: pkg.version
+        })
     }
 }
 

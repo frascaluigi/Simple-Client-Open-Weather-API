@@ -2,7 +2,7 @@ import express from 'express'
 import morgan from 'morgan';
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import index from './routes/index'
+import routes from './routes'
 import {config} from './loadConfiguration';
 import passport from 'passport';
 const {URL} = require('url');
@@ -41,10 +41,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-app.use('/api', index)
+app.use('/api', routes);
 
 app.listen(CONFIG_SERVER.port, () => {
-  console.log(`${CONFIG_SERVER.app_name} started: ${serviceUrl} (ENVIRONMENT: ${NODE_ENV})`)
+  console.log(`${config.get('app_name')} started: ${serviceUrl} (ENVIRONMENT: ${NODE_ENV})`)
 })
 
 
