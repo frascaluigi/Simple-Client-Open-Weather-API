@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { Request, Response, NextFunction } from 'express'
-import { config } from '../app';
+import { config } from '../loadConfiguration';
 import { currentWeatherForecast } from '../helpers/recovers-forecasts'
 
 export default async (req: Request, res: Response, next: NextFunction) => {

@@ -1,15 +1,12 @@
-import express from 'express'
-
-import currentWeather from '../controllers/current-weather'
-import cityStatistics from '../controllers/cities-statistics'
-import fiveDays from '../controllers/five-days'
-import { getVersionResponse } from '../controllers/health'
+import express from 'express';
+import health from './health';
+import weather from './weather';
+import auth from './auth';
 
 const router = express.Router()
 
-router.get('/current-weather-forecast/:city', currentWeather)
-router.get('/statistics', cityStatistics)
-router.get('/five-days-forecast/:city', fiveDays)
+router.use('/health', health);
+router.use('/weather', weather);
+router.use('/auth', auth);
 
-router.get('/health', getVersionResponse)
 export default router

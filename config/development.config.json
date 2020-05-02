@@ -2,8 +2,15 @@
     "env": "development",
     "server": {
         "app_name": "Simple Client OpenWeatherAPI",
+        "service_url": "http://weather.example.com",
         "port": 60702,
         "external_api_key": "c0f8aa22561d7ba0b2a526199dce8865",
+        "auth": {
+            "facebook": {
+                "appID": "593159447941713",
+                "appSecret": "fd7ba82d87f67fdbb6a4cf7efa2db68c"
+            }
+        },
         "cities": [
             "milan",
             "london",

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { config } from '../app';
+import { config } from '../loadConfiguration';
 
 
 export const currentWeatherForecast = async (city:string):Promise<AxiosResponse> => {
