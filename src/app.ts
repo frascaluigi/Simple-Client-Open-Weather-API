@@ -25,7 +25,7 @@ if(isDev){
   }))
 }else{
   // Use RedisStore in production mode
-  console.log("REDIS")
+  //console.log("REDIS")
 }
 
 const CONFIG_SERVER = config.get('server');
