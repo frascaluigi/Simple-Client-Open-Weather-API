@@ -13,7 +13,7 @@ const FileStore = require('session-file-store')(expressSession);
 const NODE_ENV = config.get('NODE_ENV')
 const isDev = NODE_ENV === 'development';
 
-const app = express()
+export const app = express()
 
 if(isDev){
   // Use FileStore in development mode
@@ -43,8 +43,8 @@ app.use(passport.session());
 
 app.use('/api', routes);
 
-app.listen(CONFIG_SERVER.port, () => {
-  console.log(`${config.get('app_name')} started: ${serviceUrl} (ENVIRONMENT: ${NODE_ENV})`)
-})
-
-
+if(NODE_ENV !== 'test'){
+  app.listen(CONFIG_SERVER.port, () => {
+    console.info(`${config.get('app_name')} started: ${serviceUrl} (ENVIRONMENT: ${NODE_ENV})`)
+  })
+}
