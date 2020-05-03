@@ -43,8 +43,6 @@ app.use(passport.session());
 
 app.use('/api', routes);
 
-if(NODE_ENV !== 'test'){
-  app.listen(CONFIG_SERVER.port, () => {
+NODE_ENV !== 'test' && app.listen(CONFIG_SERVER.port, () => {
     console.info(`${config.get('app_name')} started: ${serviceUrl} (ENVIRONMENT: ${NODE_ENV})`)
-  })
-}
+})

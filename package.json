@@ -10,7 +10,8 @@
     "dev": "NODE_ENV=development ts-node-dev --respawn --transpileOnly ./src/app.ts",
     "prod": "tsc && NODE_ENV=test node ./build/app.js",
     "debug": "tsc && NODE_ENV=test node --inspect ./build/app.js",
-    "test": "jest --watch"
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "keywords": [],
   "author": "",
