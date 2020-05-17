@@ -6,7 +6,6 @@ import routes from './routes';
 import { config } from './loadConfiguration';
 import passport from 'passport';
 const { URL } = require('url');
-
 const expressSession = require('express-session');
 const FileStore = require('session-file-store')(expressSession);
 
