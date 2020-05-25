@@ -21,6 +21,20 @@ const swaggerDefinition: swaggerJSDoc.SwaggerDefinition = {
 				'/api',
 		},
 	],
+	components: {
+		securitySchemes: {
+			apiKeyAuth: {
+				type: 'apiKey',
+				in: 'header',
+				name: 'X-API-KEY',
+			},
+		},
+	},
+	secutiry: [
+		{
+			apiKeyAuth: [],
+		},
+	],
 };
 
 const options: swaggerJSDoc.Options = {

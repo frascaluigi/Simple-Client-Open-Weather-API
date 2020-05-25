@@ -16,6 +16,8 @@ const router = express.Router();
  *        name: city
  *        schema:
  *          type: string
+ *    security:
+ *      - apiKeyAuth: []
  *    produces:
  *      - application/json
  *    responses:

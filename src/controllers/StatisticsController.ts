@@ -22,7 +22,7 @@ export interface CityMetricsInterface {
 
 class StatisticsController {
 	private static highestUmidity = (cities: any) => {
-		let wetterCity: WetterCityInterface = <WetterCityInterface>{
+		const wetterCity: WetterCityInterface = <WetterCityInterface>{
 			cityName: null,
 			value: 0,
 		};
@@ -39,7 +39,7 @@ class StatisticsController {
 	};
 
 	private static highestTemperature = (cities: any): HottestCityInterface => {
-		let hottestCity: HottestCityInterface = <HottestCityInterface>{
+		const hottestCity: HottestCityInterface = <HottestCityInterface>{
 			cityName: null,
 			value: 0,
 		};
@@ -129,7 +129,7 @@ class StatisticsController {
 				allHumidity.push(_.get(_.get(l, 'main'), 'humidity'));
 			}
 
-			let returnObj = {
+			const returnObj = {
 				city: city,
 				temperatures: allTemperatures,
 				pressures: allPressures,
