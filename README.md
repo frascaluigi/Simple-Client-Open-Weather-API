@@ -1,17 +1,21 @@
 # Simple-Client-OpenWeatherAPI
 
-This repository contains a simple client which interfaces with Open Weather API.
+RESTful Web Services with Node.js and Express which interfaces with Open Weather API https://openweathermap.org/api.
 
-It exposes three REST API.
+## Installation
 
+npm install
 
-#Run project in development mode
-
+## Usage
 
 npm run start
 
-#Run project in debug mode
+## Documentation
 
+## Test
 
-npm run debug
+## To-do
 
+## Author
+
+## [License]
