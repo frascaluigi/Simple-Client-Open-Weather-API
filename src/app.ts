@@ -1,7 +1,6 @@
-import routes from './routes';
-const { URL } = require('url');
 import { config } from './loadConfiguration';
 import setupApp from './setupApp';
+const { URL } = require('url');
 
 const NODE_ENV = config.get('NODE_ENV');
 const CONFIG_SERVER = config.get('server');
@@ -11,8 +10,6 @@ const serviceUrl = new URL(
 );
 
 const app = setupApp();
-
-app.use('/api', routes);
 
 NODE_ENV !== 'test' &&
 	app.listen(CONFIG_SERVER.port, () => {

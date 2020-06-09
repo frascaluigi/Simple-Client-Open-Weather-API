@@ -1,13 +1,13 @@
 import supertest from 'supertest';
-import {app} from '../app';
+import setupApp from '../setupApp';
 
-const request = supertest(app);
+const request = supertest(setupApp());
 
 describe('Health Test', () => {
-    it('should test that health route is working', async (done) => {
-      const response = await request.get('/api/health');
-      expect(response.status).toBe(200);
-      expect(response.body.env).toBe('test');
-      done();
-    })
-})
+	it('should test that health route is working', async (done) => {
+		const response = await request.get('/api/health');
+		expect(response.status).toBe(200);
+		expect(response.body.env).toBe('test');
+		done();
+	});
+});

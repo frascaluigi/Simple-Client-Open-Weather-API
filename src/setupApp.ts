@@ -1,6 +1,7 @@
 import cors from 'cors';
 import morgan from 'morgan';
 import express from 'express';
+import routes from './routes';
 import passport from 'passport';
 import bodyParser from 'body-parser';
 import { config } from './loadConfiguration';
@@ -35,6 +36,8 @@ const setupExpressApp = () => {
 
 	app.use(passport.initialize());
 	app.use(passport.session());
+
+	app.use('/api', routes);
 
 	return app;
 };
