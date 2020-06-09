@@ -1,13 +1,19 @@
 {
-    "env": "test", 
+    "env": "test",
+    "app_name": "Simple Client OpenWeatherAPI",
     "server": {
-        "app_name": "Simple Client OpenWeatherAPI",
-        "port": 3000,
-        "external_api_key": "c0f8aa22561d7ba0b2a526199dce8865",
+        "service_url": "http://weather.example.com",
+        "port": 60702,
+        "auth": {
+            "facebook": {
+                "appID": "",
+                "appSecret": ""
+            }
+        },
         "cities": [
             "milan",
             "london",
             "rome"
         ]
-    } 
+    }
 }
