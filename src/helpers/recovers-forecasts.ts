@@ -5,9 +5,6 @@ export const currentWeatherForecast = async (
 	city: string,
 	apiKey?: string
 ): Promise<AxiosResponse> => {
-	// const urlCurrentWeatherForecast = `http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${
-	// 	config.get('server').external_api_key
-	// }`;
 	try {
 		if (!apiKey) throw new Error('missing authorization token');
 		const urlCurrentWeatherForecast = `http://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${apiKey}`;

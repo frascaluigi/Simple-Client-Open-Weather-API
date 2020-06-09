@@ -71,38 +71,45 @@ class StatisticsController {
 		res: Response,
 		next: NextFunction
 	) => {
-		const citiesThatIlike = config.get('server').cities;
+		try {
+			const apiKey = req.get('x-api-key');
+			if (!apiKey) throw new Error('missing authorization token');
+			const citiesThatIlike = config.get('server').cities;
 
-		const promises: Promise<AxiosResponse>[] = [];
-		citiesThatIlike.map((city: any) => {
-			promises.push(currentWeatherForecast(city));
-		});
-
-		Promise.all(promises)
-			.then((result) => {
-				let avgTemperatures: AvgTemperatureInterface[] = [];
-
-				result.map((city) =>
-					avgTemperatures.push(
-						StatisticsController.averageTemperature(city.data)
-					)
-				);
-
-				const wetterCity = StatisticsController.highestUmidity(result);
-				const hottestCity = StatisticsController.highestTemperature(result);
-
-				const response: CityMetricsInterface = {
-					avgTemperatures,
-					hottestCity,
-					wetterCity,
-				};
-
-				res.status(200).json(response);
-			})
-			.catch((err) => {
-				console.error('Error:', err);
-				res.status(400).json({ error: 'An error has occured' });
+			const promises: Promise<AxiosResponse>[] = [];
+			citiesThatIlike.map((city: any) => {
+				promises.push(currentWeatherForecast(city, apiKey));
 			});
+
+			Promise.all(promises)
+				.then((result) => {
+					let avgTemperatures: AvgTemperatureInterface[] = [];
+
+					result.map((city) =>
+						avgTemperatures.push(
+							StatisticsController.averageTemperature(city.data)
+						)
+					);
+
+					const wetterCity = StatisticsController.highestUmidity(result);
+					const hottestCity = StatisticsController.highestTemperature(result);
+
+					const response: CityMetricsInterface = {
+						avgTemperatures,
+						hottestCity,
+						wetterCity,
+					};
+
+					res.status(200).json(response);
+				})
+				.catch((err) => {
+					console.error('Error:', err);
+					res.status(400).json({ error: 'An error has occured' });
+				});
+		} catch (error) {
+			console.error('error: ', error);
+			res.status(400).json({ error: `An error has occured: ${error.message}` });
+		}
 	};
 
 	static fiveDaysResponse = async (
@@ -110,40 +117,48 @@ class StatisticsController {
 		res: Response,
 		next: NextFunction
 	) => {
-		const citiesThatIlike = config.get('server').cities;
-		const parameter = req.params.city;
-		if (_.find(citiesThatIlike, (elem) => elem === parameter.toLowerCase())) {
-			const fiveDays = await fiveDaysForecast(parameter);
-			if (!fiveDays) res.status(400).json({ error: 'An error occured' });
+		try {
+			const apiKey = req.get('x-api-key');
+			if (!apiKey) throw new Error('missing authorization token');
 
-			let list = _.get(_.get(fiveDays, 'data'), 'list');
-			let city = _.get(_.get(fiveDays, 'data'), 'city');
+			const citiesThatIlike = config.get('server').cities;
+			const parameter = req.params.city;
+			if (_.find(citiesThatIlike, (elem) => elem === parameter.toLowerCase())) {
+				const fiveDays = await fiveDaysForecast(parameter);
+				if (!fiveDays) res.status(400).json({ error: 'An error occured' });
 
-			let allTemperatures = [];
-			let allPressures = [];
-			let allHumidity = [];
+				let list = _.get(_.get(fiveDays, 'data'), 'list');
+				let city = _.get(_.get(fiveDays, 'data'), 'city');
 
-			for (let l of list) {
-				allTemperatures.push(_.get(_.get(l, 'main'), 'temp'));
-				allPressures.push(_.get(_.get(l, 'main'), 'pressure'));
-				allHumidity.push(_.get(_.get(l, 'main'), 'humidity'));
+				let allTemperatures = [];
+				let allPressures = [];
+				let allHumidity = [];
+
+				for (let l of list) {
+					allTemperatures.push(_.get(_.get(l, 'main'), 'temp'));
+					allPressures.push(_.get(_.get(l, 'main'), 'pressure'));
+					allHumidity.push(_.get(_.get(l, 'main'), 'humidity'));
+				}
+
+				const returnObj = {
+					city: city,
+					temperatures: allTemperatures,
+					pressures: allPressures,
+					humidity: allHumidity,
+				};
+
+				res.status(200).json(returnObj);
+			} else {
+				console.log(`city ${parameter} not found`);
+				res.status(200).json({
+					info: `We're sorry we have no weather information about ${parameter.toUpperCase()} in environment: ${
+						config.get('server').env
+					}`,
+				});
 			}
-
-			const returnObj = {
-				city: city,
-				temperatures: allTemperatures,
-				pressures: allPressures,
-				humidity: allHumidity,
-			};
-
-			res.status(200).json(returnObj);
-		} else {
-			console.log(`city ${parameter} not found`);
-			res.status(200).json({
-				info: `We're sorry we have no weather information about ${parameter.toUpperCase()} in environment: ${
-					config.get('server').env
-				}`,
-			});
+		} catch (error) {
+			console.error('error: ', error);
+			res.status(400).json({ error: `An error has occured: ${error.message}` });
 		}
 	};
 }

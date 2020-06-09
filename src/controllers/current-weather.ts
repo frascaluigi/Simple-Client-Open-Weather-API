@@ -6,9 +6,8 @@ import { currentWeatherForecast } from '../helpers/recovers-forecasts';
 export default async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const apiKey = req.get('x-api-key');
-		const parameter = req.params.city;
 		if (!apiKey) throw new Error('missing authorization token');
-		console.log('auth: ', apiKey);
+		const parameter: string = req.params.city;
 		const citiesThatIlike = config.get('server').cities;
 		if (_.find(citiesThatIlike, (elem) => elem === parameter.toLowerCase())) {
 			const cityForecast = await currentWeatherForecast(parameter, apiKey);
@@ -24,6 +23,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 		}
 	} catch (error) {
 		console.error('error: ', error);
-		res.status(400).json({ error: 'An error has occured' });
+		res.status(400).json({ error: `An error has occured: ${error.message}` });
 	}
 };

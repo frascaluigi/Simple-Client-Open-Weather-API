@@ -35,6 +35,8 @@ router.get('/current-weather-forecast/:city', currentWeather);
  *    tags:
  *      - Weather
  *    summary: info about average temperature, warmer city, wetter city
+ *    security:
+ *      - apiKeyAuth: []
  *    produces:
  *      - application/json
  *    responses:
@@ -55,6 +57,8 @@ router.get('/statistics', statisticsController.citiesStatisticsResponse);
  *        name: city
  *        schema:
  *          type: string
+ *    security:
+ *      - apiKeyAuth: []
  *    produces:
  *      - application/json
  *    responses:

@@ -4,7 +4,6 @@
     "server": {
         "service_url": "http://weather.example.com",
         "port": 60702,
-        "external_api_key": "c0f8aa22561d7ba0b2a526199dce8865",
         "auth": {
             "facebook": {
                 "appID": "",

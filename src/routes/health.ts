@@ -10,7 +10,7 @@ const router = express.Router();
  *    tags:
  *      - Health
  *    name: Health
- *    summary: simple endpoint to check if the servers responds
+ *    summary: simple endpoint to check if the server respond
  *    produces:
  *      - application/json
  *    responses:
