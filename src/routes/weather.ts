@@ -24,8 +24,10 @@ const router = express.Router();
  *    responses:
  *      '200':
  *        description: Return info about weather information of city
+ *      '401':
+ *        description: Unhautorized
  *      '404':
- *        description: not found
+ *        description: Not found
  */
 router.get('/current-weather-forecast/:city', [checkApiKey], currentWeather);
 
