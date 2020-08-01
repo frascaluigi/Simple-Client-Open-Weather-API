@@ -1,0 +1,19 @@
+{
+    "env": "development",
+    "app_name": "Simple Client OpenWeatherAPI",
+    "server": {
+        "service_url": "http://weather.example.com",
+        "port": 60702,
+        "auth": {
+            "facebook": {
+                "appID": "",
+                "appSecret": ""
+            }
+        },
+        "cities": [
+            "milan",
+            "london",
+            "budapest"
+        ]
+    }
+}
