@@ -127,14 +127,14 @@ class StatisticsController {
 				const fiveDays = await fiveDaysForecast(parameter, apiKey);
 				if (!fiveDays) res.status(400).json({ error: 'An error occured' });
 
-				let list = _.get(_.get(fiveDays, 'data'), 'list');
-				let city = _.get(_.get(fiveDays, 'data'), 'city');
+				const dataOnFiveDays = _.get(_.get(fiveDays, 'data'), 'list');
+				const city = _.get(_.get(fiveDays, 'data'), 'city');
 
 				let allTemperatures = [];
 				let allPressures = [];
 				let allHumidity = [];
 
-				for (let l of list) {
+				for (let l of dataOnFiveDays) {
 					allTemperatures.push(_.get(_.get(l, 'main'), 'temp'));
 					allPressures.push(_.get(_.get(l, 'main'), 'pressure'));
 					allHumidity.push(_.get(_.get(l, 'main'), 'humidity'));

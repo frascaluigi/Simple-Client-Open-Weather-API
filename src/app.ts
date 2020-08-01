@@ -11,6 +11,13 @@ const serviceUrl = new URL(
 
 const app = setupApp();
 
+//error middleware
+app.use(function(err, req, res, next) {
+	console.error("error middleware: ", err.message);
+	const status = err.status ? err.status : 500; 
+	res.status(status).send(err?.message);
+});
+
 NODE_ENV !== 'test' &&
 	app.listen(CONFIG_SERVER.port, () => {
 		console.info(
