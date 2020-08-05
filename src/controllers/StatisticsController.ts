@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 export interface ResponseInterface {
 	cityName: string;
-	value: number;
+	value: number | string;
 }
 
 export interface AvgTemperatureInterface extends ResponseInterface {}
@@ -60,7 +60,7 @@ class StatisticsController {
 
 		const avgTempResponse: AvgTemperatureInterface = {
 			cityName: city.name,
-			value: avg,
+			value: avg.toFixed(2),
 		};
 
 		return avgTempResponse;

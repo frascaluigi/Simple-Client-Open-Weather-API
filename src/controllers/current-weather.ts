@@ -6,16 +6,17 @@ import { currentWeatherForecast } from '../helpers/recovers-forecasts';
 export default async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const apiKey = req.get('x-api-key');
-		const parameter: string = req.params.city;
-		const citiesThatIlike = config.get('server').cities;
-		if (_.find(citiesThatIlike, (elem) => elem === parameter.toLowerCase())) {
-			const cityForecast = await currentWeatherForecast(parameter, apiKey);
+		const city: string = req.params.city;
+		const citiesThatIlike:string[] = config.get('server').cities;
+
+		if(citiesThatIlike.includes(city)){
+			const cityForecast = await currentWeatherForecast(city, apiKey);
 			if (!cityForecast) throw new Error('error with current forecast');
 			res.status(200).json(cityForecast.data);
-		} else {
-			console.log(`city ${parameter} not found`);
+		}else {
+			console.log(`city ${city} not found`);
 			res.status(404).json({
-				info: `We're sorry we have no weather information about ${parameter.toUpperCase()} in environment: ${config.get(
+				info: `We're sorry we have no weather information about ${city.toUpperCase()} in environment: ${config.get(
 					'env'
 				)}`,
 			});
