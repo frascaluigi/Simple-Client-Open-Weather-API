@@ -1,6 +1,7 @@
 import express from 'express';
 import currentWeather from '../controllers/current-weather';
 import statisticsController from '../controllers/StatisticsController';
+import checkApiKey from '../middlewares/checkApiKey';
 
 const router = express.Router();
 
@@ -23,10 +24,12 @@ const router = express.Router();
  *    responses:
  *      '200':
  *        description: Return info about weather information of city
+ *      '401':
+ *        description: Unhautorized
  *      '404':
- *        description: not found
+ *        description: Not found
  */
-router.get('/current-weather-forecast/:city', currentWeather);
+router.get('/current-weather-forecast/:city', [checkApiKey], currentWeather);
 
 /**
  * @swagger
