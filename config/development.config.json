@@ -2,7 +2,7 @@
     "env": "development",
     "app_name": "Simple Client OpenWeatherAPI",
     "server": {
-        "service_url": "http://weather.example.com",
+        "service_url": "http://127.0.0.1",
         "port": 60702,
         "auth": {
             "facebook": {
